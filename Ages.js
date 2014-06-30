@@ -12,6 +12,7 @@ var graph = {
 	colorGirls: "green",
 	colorBoys: "blue"
 };
+var svg;
 var xScale;
 var hScale;
 var yScale;
@@ -50,20 +51,36 @@ function setNextYear() {
 	currentYear = years[currentYear].next;
 }
 
-function updateYearLabels(svg) {
+function updateYearLabels() {
 	var data = svg.select(".yearLabel")
 		.selectAll("tspan")
 		.data(yearsArray);
 	
-	data.attr("fill", function(d) {return years[d].exists === 1 ? "dimgrey" : "silver"; })
-		.attr("font-weight", function(d) { return currentYear === d ? "bold" : "normal"; });
-	
-	data.transition()
+	data.attr("class", function(d) {
+			if (years[d].exists === 0) return "yearInactive";
+			return (currentYear === d) ? "yearCurrent" : "yearNormal";
+		})
+		.attr("fill", function(d) { return (years[d].exists === 0) ? "silver" : "dimgrey"; })
+		.transition()
 		.attr("fill", function(d) {
 			if (years[d].exists === 0) return "silver";
-			return currentYear === d ? "black" : "dimgrey";
-		})
-		.attr("font-weight", function(d) { return currentYear === d ? "bold" : "normal"; });
+			return currentYear === d ? "black" : "dimgrey";		
+		});
+	
+	data.on("mouseover", function() {
+		svg.on("click", null);
+	});
+	data.on("mouseout", function() {
+		svg.on("click", function() { svgClick(); });
+	});
+	
+	data.on("click", function(d) {
+		currentYear = d;
+		setCurrentData();
+		updateYearLabels();
+	
+		updateBars();		
+	});
 }
 
 function setCurrentData() {
@@ -97,7 +114,7 @@ function setScalesAndAxes() {
 		
 function generateVis() {
 	"use strict";
-	var svg = d3.select("body")
+	svg = d3.select("body")
 		.append("svg")
 		.attr("width", w)
 		.attr("height", h);
@@ -151,10 +168,9 @@ function generateVis() {
 		.attr("class", "ageLabel")
 		.attr("dx", function (d) { return xScale(d.age) + xScale.rangeBand() / 2; })
 		.attr("dy", h - graph.paddingBottom + 10)
-		//.text(function (d) { return d.age % 2 === 0 ? d.age : " "; });
 		.text(function (d) { return (d.age === 3 || d.age % 5 === 0) ? d.age : " "; });
 
-	// Подписи оси Y
+	// Подписи оси Y.
 	svg.append("g")
 		.attr("class", "label")
 		.selectAll(".yLabel")
@@ -180,9 +196,9 @@ function generateVis() {
 		.attr("style", "dominant-baseline: central;")		
 		.text(function (d) { return d; });
 
-	updateYearLabels(svg);
+	updateYearLabels();
 	
-	// Столбики
+	// Столбики.
 	var bars = svg.append("g");
 	
 	bars.selectAll(".barG")
@@ -207,16 +223,18 @@ function generateVis() {
 		.attr("width", xScale.rangeBand())
 		.attr("fill", graph.colorBoys);
 		
-	svg.on("click", function () {
-		setNextYear();
-		setCurrentData();
-		updateYearLabels(svg);
-		
-		updateBars(svg);
-	});
+	svg.on("click", function () { svgClick(); });
 }
 
-function updateBars(svg) {
+function svgClick() {
+	setNextYear();
+	setCurrentData();
+	updateYearLabels();
+	
+	updateBars();
+}
+
+function updateBars() {
 	"use strict";
 	svg.selectAll(".barG")
 		.data(currentData, function (d) { return d.age; })
