@@ -1,4 +1,4 @@
-/*global d3:false */
+п»ї/*global d3:false */
 var w = 800;
 var h = 250;
 var dataset;
@@ -119,14 +119,14 @@ function generateVis() {
 		.attr("width", w)
 		.attr("height", h);
 
-	// Фоновый прямоугольник.
+	// Р¤РѕРЅРѕРІС‹Р№ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє.
 	svg.append("rect").attr({
 		height: h,
 		width: w,
 		fill: "rgb(220,220,240)"
 	});
 		
-	// Промежуточные горизонтальные линии.
+	// РџСЂРѕРјРµР¶СѓС‚РѕС‡РЅС‹Рµ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅС‹Рµ Р»РёРЅРёРё.
 	svg.append("g")
 		.attr("class", "intLine")
 		.selectAll(".hLine")
@@ -140,7 +140,7 @@ function generateVis() {
 		.attr("y2", function (d) { return yScale(d); })		
 		.attr("style", "stroke:rgb(200,200,200);stroke-width:1");
 
-	// Ось X.
+	// РћСЃСЊ X.
 	svg.append("line").attr({
 		x1: graph.paddingLeft,
 		x2: w - graph.paddingRight,
@@ -149,7 +149,7 @@ function generateVis() {
 		style: "stroke:rgb(100,100,100);stroke-width:1"
 	});
 
-	// Ось Y.
+	// РћСЃСЊ Y.
 	svg.append("line").attr({
 		x1: graph.paddingLeft,
 		x2: graph.paddingLeft,
@@ -158,7 +158,7 @@ function generateVis() {
 		style: "stroke:rgb(100,100,100);stroke-width:1"
 	});
 	
-	// Подписи X.
+	// РџРѕРґРїРёСЃРё X.
 	svg.append("g")
 		.attr("class", "label")
 		.selectAll(".ageLabel")
@@ -170,7 +170,7 @@ function generateVis() {
 		.attr("dy", h - graph.paddingBottom + 10)
 		.text(function (d) { return (d.age === 3 || d.age % 5 === 0) ? d.age : " "; });
 
-	// Подписи оси Y.
+	// РџРѕРґРїРёСЃРё РѕСЃРё Y.
 	svg.append("g")
 		.attr("class", "label")
 		.selectAll(".yLabel")
@@ -198,7 +198,7 @@ function generateVis() {
 
 	updateYearLabels();
 	
-	// Столбики.
+	// РЎС‚РѕР»Р±РёРєРё.
 	var bars = svg.append("g");
 	
 	bars.selectAll(".barG")
