@@ -26,9 +26,33 @@ var years = {
 	"2013": {next: "2014", exists: 1},
 	"2014": {next: "2009", exists: 1}
 };
-
 var yearsArray = ["2009", "2010", "2011", "2012", "2013", "2014"];
 var yStops = [0, 10, 20, 30, 40, 50];
+
+var svgClick = function() {
+	changeYear(years[currentYear].next);
+};
+
+var yearClick = function (d) {
+	if (years[d].exists === 1) {
+		changeYear(d);
+	}
+};
+
+var yearMouseOver = function (d) {
+	svg.on("click", null);
+};
+
+var yearMouseOut = function (d) {
+	svg.on("click", svgClick);
+};
+
+function changeYear (year) {
+	currentYear = year;
+	setCurrentData();
+	updateYearLabels();
+	updateBars();
+}
 
 d3.csv("Ages.csv", function (error, data) {
 	"use strict";
@@ -46,41 +70,25 @@ d3.csv("Ages.csv", function (error, data) {
 	generateVis();
 });
 
-function setNextYear() {
-	"use strict";
-	currentYear = years[currentYear].next;
-}
-
 function updateYearLabels() {
 	var data = svg.select(".yearLabel")
 		.selectAll("tspan")
 		.data(yearsArray);
 	
-	data.attr("class", function(d) {
+	data.attr("class", function (d) {
 			if (years[d].exists === 0) return "yearInactive";
 			return (currentYear === d) ? "yearCurrent" : "yearNormal";
 		})
-		.attr("fill", function(d) { return (years[d].exists === 0) ? "silver" : "dimgrey"; })
+		.attr("fill", function (d) { return (years[d].exists === 0) ? "silver" : "dimgrey"; })
 		.transition()
-		.attr("fill", function(d) {
+		.attr("fill", function (d) {
 			if (years[d].exists === 0) return "silver";
 			return currentYear === d ? "black" : "dimgrey";		
 		});
 	
-	data.on("mouseover", function() {
-		svg.on("click", null);
-	});
-	data.on("mouseout", function() {
-		svg.on("click", function() { svgClick(); });
-	});
-	
-	data.on("click", function(d) {
-		currentYear = d;
-		setCurrentData();
-		updateYearLabels();
-	
-		updateBars();		
-	});
+	data.on("mouseover", yearMouseOver);
+	data.on("mouseout", yearMouseOut);	
+	data.on("click", yearClick);
 }
 
 function setCurrentData() {
@@ -223,15 +231,7 @@ function generateVis() {
 		.attr("width", xScale.rangeBand())
 		.attr("fill", graph.colorBoys);
 		
-	svg.on("click", function () { svgClick(); });
-}
-
-function svgClick() {
-	setNextYear();
-	setCurrentData();
-	updateYearLabels();
-	
-	updateBars();
+	svg.on("click", svgClick);
 }
 
 function updateBars() {
