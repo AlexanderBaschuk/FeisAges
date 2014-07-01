@@ -6,7 +6,7 @@ var currentData = [];
 var currentYear = "2009";
 var graph = {
 	paddingLeft: 30,
-	paddingTop: 20,
+	paddingTop: 50,
 	paddingRight: 10,
 	paddingBottom: 20,
 	colorGirls: "green",
@@ -161,7 +161,7 @@ function generateVis() {
 	svg.append("line").attr({
 		x1: graph.paddingLeft,
 		x2: graph.paddingLeft,
-		y1: graph.paddingTop,
+		y1: graph.paddingTop - 12,
 		y2: h - graph.paddingBottom + 0.5,
 		style: "stroke:rgb(100,100,100);stroke-width:1"
 	});
@@ -193,6 +193,21 @@ function generateVis() {
 		.attr("style", "dominant-baseline: central;")
 		.text(function (d) { return d; });
 		
+	var title = svg.append("text")
+		.attr("class", "title");
+		
+	title.append("tspan")
+		.attr("class", "title-line1")
+		.attr("x", 40 )
+		.attr("y", 35)	
+		.text("St.Petersburg Open Feis");
+		
+	title.append("tspan")
+		.attr("class", "title-line2")	
+		.attr("x", 40 )
+		.attr("y", 50)	
+		.text("число участников по возрастам");
+	
 	// 2009 2010 2011 2012 ...
 	svg.append("g")
 		.attr("class", "yearLabel")
@@ -201,9 +216,8 @@ function generateVis() {
 		.enter()
 		.append("text")
 		.append("tspan")
-		.attr("dx", function(d, i) { return w/2 + i * 60 + 50; })
-		.attr("dy", (yScale(40) + yScale(50)) / 2)
-		.attr("style", "dominant-baseline: central;")		
+		.attr("dx", function(d, i) { return 380 + i * 60 + 50; })
+		.attr("dy", 50)
 		.text(function (d) { return d; });
 
 	updateYearLabels();
