@@ -6,7 +6,7 @@ var currentData = [];
 var currentYear = "2009";
 var graph = {
 	paddingLeft: 30,
-	paddingTop: 10,
+	paddingTop: 29,
 	paddingRight: 10,
 	paddingBottom: 20,
 	colorGirls: "green",
@@ -27,15 +27,7 @@ var years = {
 	"2014": {next: "2009", exists: 1}
 };
 var yearsArray = ["2009", "2010", "2011", "2012", "2013", "2014"];
-//var yStops = [0, 10, 20, 30, 40, 50];
-var yStops = [
-	{n: 0, drawLine: 0},
-	{n: 10, drawLine: 1},
-	{n: 20, drawLine: 1},
-	{n: 30, drawLine: 1},
-	{n: 40, drawLine: 1},
-	{n: 50, drawLine: 0}
-];
+var yStops = [0, 10, 20, 30, 40, 50];
 
 var svgClick = function() {
 	changeYear(years[currentYear].next);
@@ -146,14 +138,14 @@ function generateVis() {
 	svg.append("g")
 		.attr("class", "intLine")
 		.selectAll(".hLine")
-		.data(yStops, function(d) { return d.n; })
+		.data(yStops)
 		.enter()
 		.append("line")
 		.attr("class", "hLine")
 		.attr("x1", graph.paddingLeft)
-		.attr("x2", function (d) { return (d.drawLine === 1) ? w - graph.paddingRight : graph.paddingLeft; })
-		.attr("y1", function (d) { return yScale(d.n); })	
-		.attr("y2", function (d) { return yScale(d.n); })		
+		.attr("x2", w - graph.paddingRight)
+		.attr("y1", function (d) { return yScale(d); })	
+		.attr("y2", function (d) { return yScale(d); })		
 		.attr("style", "stroke:rgb(200,200,200);stroke-width:1");
 
 	// Ось X.
@@ -169,7 +161,7 @@ function generateVis() {
 	svg.append("line").attr({
 		x1: graph.paddingLeft,
 		x2: graph.paddingLeft,
-		y1: graph.paddingTop,
+		y1: graph.paddingTop - 9,
 		y2: h - graph.paddingBottom + 0.5,
 		style: "stroke:rgb(100,100,100);stroke-width:1"
 	});
@@ -191,28 +183,29 @@ function generateVis() {
 	svg.append("g")
 		.attr("class", "label")
 		.selectAll(".yLabel")
-		.data(yStops, function(d) { return d.n; })
+		.data(yStops)
 		.enter()
 		.append("text")
 		.attr("class", "yLabel")
 		.attr("text-anchor", "end")			
 		.attr("dx", graph.paddingLeft - 5)
-		.attr("dy", function (d) { return yScale(d.n); })
+		.attr("dy", function (d) { return yScale(d); })
 		.attr("style", "dominant-baseline: central;")
-		.text(function (d) { return d.n; });
+		.text(function (d) { return d; });
 		
+	// Заголовок.
 	var title = svg.append("text")
 		.attr("class", "title");
 		
 	title.append("tspan")
 		.attr("class", "title-line1")
-		.attr("x", 40 )
+		.attr("x", 45 )
 		.attr("y", 35)	
 		.text("St.Petersburg Open Feis");
 		
 	title.append("tspan")
 		.attr("class", "title-line2")	
-		.attr("x", 40 )
+		.attr("x", 45 )
 		.attr("y", 50)	
 		.text("число участников по возрастам");
 	
@@ -225,7 +218,7 @@ function generateVis() {
 		.append("text")
 		.append("tspan")
 		.attr("dx", function(d, i) { return 380 + i * 60 + 50; })
-		.attr("dy", 50)
+		.attr("dy", 35)
 		.text(function (d) { return d; });
 
 	updateYearLabels();
