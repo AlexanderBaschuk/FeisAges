@@ -39,11 +39,11 @@ var yearClick = function (d) {
 	}
 };
 
-var yearMouseOver = function (d) {
+var yearMouseOver = function () {
 	svg.on("click", null);
 };
 
-var yearMouseOut = function (d) {
+var yearMouseOut = function () {
 	svg.on("click", svgClick);
 };
 
@@ -174,6 +174,7 @@ function generateVis() {
 		.enter()
 		.append("text")
 		.attr("class", "ageLabel")
+		.attr("text-anchor", "middle")		
 		.attr("dx", function (d) { return xScale(d.age) + xScale.rangeBand() / 2; })
 		.attr("dy", h - graph.paddingBottom + 10)
 		.text(function (d) { return (d.age === 3 || d.age % 5 === 0) ? d.age : " "; });
@@ -186,6 +187,7 @@ function generateVis() {
 		.enter()
 		.append("text")
 		.attr("class", "yLabel")
+		.attr("text-anchor", "end")			
 		.attr("dx", graph.paddingLeft - 5)
 		.attr("dy", function (d) { return yScale(d); })
 		.attr("style", "dominant-baseline: central;")
