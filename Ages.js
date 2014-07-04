@@ -4,13 +4,18 @@ var h = 250;
 var dataset;
 var currentData = [];
 var currentYear = "2009";
+var color = {
+	stroke: "#1E4920",
+	dark: "#36652F",
+	normal: "",
+	light: "#569733",
+	background: "#E5F5E6"
+};
 var graph = {
 	paddingLeft: 30,
 	paddingTop: 29,
 	paddingRight: 10,
-	paddingBottom: 20,
-	colorGirls: "green",
-	colorBoys: "blue"
+	paddingBottom: 20
 };
 var svg;
 var xScale;
@@ -79,12 +84,11 @@ function updateYearLabels() {
 			if (years[d].exists === 0) return "yearInactive";
 			return (currentYear === d) ? "yearCurrent" : "yearNormal";
 		})
-		.attr("fill", function (d) { return (years[d].exists === 0) ? "silver" : "dimgrey"; })
+		.attr("fill", function (d) { return color.dark; })
+		//.attr("fill-opacity", function (d) { return (years[d].exists === 1) ? null : .5; })
 		.transition()
-		.attr("fill", function (d) {
-			if (years[d].exists === 0) return "silver";
-			return currentYear === d ? "black" : "dimgrey";		
-		});
+		.attr("fill", function (d) { return currentYear === d ? color.stroke : color.dark; });
+		//.attr("fill-opacity", function (d) { return (years[d].exists === 1) ? null : .5; });
 	
 	data.on("mouseover", yearMouseOver);
 	data.on("mouseout", yearMouseOut);	
@@ -129,9 +133,10 @@ function generateVis() {
 
 	// Фоновый прямоугольник.
 	svg.append("rect").attr({
+		class: "background",
 		height: h,
 		width: w,
-		fill: "rgb(220,220,240)"
+
 	});
 		
 	// Промежуточные горизонтальные линии.
@@ -145,8 +150,9 @@ function generateVis() {
 		.attr("x1", graph.paddingLeft)
 		.attr("x2", w - graph.paddingRight)
 		.attr("y1", function (d) { return yScale(d); })	
-		.attr("y2", function (d) { return yScale(d); })		
-		.attr("style", "stroke:rgb(200,200,200);stroke-width:1");
+		.attr("y2", function (d) { return yScale(d); })
+		.attr("stroke", "rgb(200,200,200)")
+		.attr("stroke-width", 1);
 
 	// Ось X.
 	svg.append("line").attr({
@@ -154,16 +160,18 @@ function generateVis() {
 		x2: w - graph.paddingRight,
 		y1: h - graph.paddingBottom + 0.5,
 		y2: h - graph.paddingBottom + 0.5,
-		style: "stroke:rgb(100,100,100);stroke-width:1"
+		stroke: color.stroke,
+		"stroke-width": 1
 	});
 
 	// Ось Y.
 	svg.append("line").attr({
-		x1: graph.paddingLeft,
-		x2: graph.paddingLeft,
+		x1: graph.paddingLeft + 0.5,
+		x2: graph.paddingLeft + 0.5,
 		y1: graph.paddingTop - 9,
-		y2: h - graph.paddingBottom + 0.5,
-		style: "stroke:rgb(100,100,100);stroke-width:1"
+		y2: h - graph.paddingBottom ,
+		stroke: color.stroke,
+		"stroke-width": 1
 	});
 	
 	// Подписи X.
@@ -235,7 +243,7 @@ function generateVis() {
 		.attr("y", function (d) { return h - graph.paddingBottom - hScale(d.girlsTotal + d.boysTotal); })
 		.attr("height", function (d) { return hScale(d.girlsTotal); })
 		.attr("width", xScale.rangeBand())
-		.attr("fill", graph.colorGirls);
+		.attr("fill", color.light);
 
 	bars.selectAll(".barB")
 		.data(currentData, function (d) { return d.age; })
@@ -246,7 +254,7 @@ function generateVis() {
 		.attr("y", function (d) { return h - graph.paddingBottom - hScale(d.boysTotal); })
 		.attr("height", function (d) { return hScale(d.boysTotal); })
 		.attr("width", xScale.rangeBand())
-		.attr("fill", graph.colorBoys);
+		.attr("fill", color.dark);
 		
 	svg.on("click", svgClick);
 }

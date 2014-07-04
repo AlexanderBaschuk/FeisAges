@@ -1,3 +1,19 @@
+@font-face {
+	font-family: LaudatioC;
+	src: url(laudcn_2.ttf);
+}
+
+/*
+background #E5F5E6
+dark fill #36652F
+dark line #1E4920
+light fill #569733
+*/
+
+.background {
+	fill: #E5F5E6;
+}
+
 .title {
 	-webkit-user-select:none;
 	-khtml-user-select:none;
@@ -5,18 +21,19 @@
 	-ms-user-select:none;
 	-o-user-select:none;
 	user-select:none;
+	fill: #1E4920;
 }
 
 .title-line1 {
-	font-family: sans-serif;
+	font-family: LaudatioC, 'Lucida Sans Unicode', sans-serif;
 	font-size: 20px;
 	font-weight: bold;
 	text-anchor: start;	
 }
 
 .title-line2 {
-	font-family: serif;
-	font-size: 16px;
+	font-family: 'Lucida sans Unicode', sans-serif;
+	font-size: 13px;
 	font-weight: normal;
 	text-anchor: start;		
 }
@@ -41,7 +58,7 @@
 }
 
 .yearLabel {
-	font-family: sans-serif;
+	font-family: 'Arial', sans-serif;
 	font-size: 20px;
 
 	-webkit-user-select:none;
@@ -55,6 +72,7 @@
 .yearInactive {
 	font-weight: normal;
 	cursor: default;
+	fill-opacity: 0.5;
 }
 
 .yearNormal {
@@ -63,7 +81,8 @@
 }
 
 .yearNormal:hover {
-	font-weight: bold;
+	//font-weight: bold;
+	fill: #1E4920;
 	cursor: pointer;
 }		
 
