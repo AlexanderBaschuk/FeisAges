@@ -207,16 +207,16 @@ function generateVis() {
 		
 	title.append("tspan")
 		.attr("class", "title-line1")
-		.attr("x", 45 )
+		.attr("x", 45)
 		.attr("y", 35)	
 		.text("St.Petersburg Open Feis");
 		
 	title.append("tspan")
 		.attr("class", "title-line2")	
-		.attr("x", 45 )
+		.attr("x", 45)
 		.attr("y", 50)	
 		.text("число участников по возрастам");
-	
+		
 	// 2009 2010 2011 2012 ...
 	svg.append("g")
 		.attr("class", "yearLabel")
