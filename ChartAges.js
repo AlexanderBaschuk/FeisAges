@@ -29,9 +29,12 @@ var years = {
 	"2011": {next: "2012", exists: 1},
 	"2012": {next: "2013", exists: 1},
 	"2013": {next: "2014", exists: 1},
-	"2014": {next: "2009", exists: 1}
+	"2014": {next: "2015", exists: 1},
+	"2015": {next: "2016", exists: 1},
+	"2016": {next: "2017", exists: 1},
+	"2017": {next: "2009", exists: 1}
 };
-var yearsArray = ["2009", "2010", "2011", "2012", "2013", "2014"];
+var yearsArray = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017"];
 var yStops = [0, 10, 20, 30, 40, 50];
 
 var svgClick = function() {
@@ -225,7 +228,7 @@ function generateVis() {
 		.enter()
 		.append("text")
 		.append("tspan")
-		.attr("dx", function(d, i) { return 380 + i * 60 + 50; })
+		.attr("dx", function(d, i) { return 290 + i * 57; })
 		.attr("dy", 35)
 		.text(function (d) { return d; });
 
